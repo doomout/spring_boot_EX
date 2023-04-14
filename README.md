@@ -46,3 +46,56 @@ dependencies {
   * 스프링은 jackson-databind 라는 별도의 라이브러리를 추가 후 개발해야 한다.
   * 스프링 부트는 web 항목 추가할 때 자동으로 포함되어 별도의 설정 없이 바로 개발 가능하다.
   * 화면은 Thymeleaf를 이용하고 데이터는 json으로 전송하는 방식으로 개발한다.
+
+4. Thymeleaf 문법
+```html
+<!--/* 주석 처리 + 에러 찾기 좋은 형태 주석 */-->
+<!--/*변수 선언법*/-->
+<div th:with="num1=${10}, num2=${20}">
+    <h4 th:text="${num1 + num2}"></h4> <!--/*결과 : 30 출력*/-->
+</div>
+<!--/*반복문 2가지 형태*/-->
+<ul>
+    <li th:each="str: ${list}" th:text="${str}"></li>
+</ul>
+<ul>
+    <th:block th:each="str: ${list}">
+        <li>[[${str}]]</li>
+    </th:block>
+</ul>
+<!--/*반복문의 status 변수 (index/count/size/first/last/odd/even 등 사용)*/-->
+<ul>
+    <li th:each="str,status: ${list}">
+        [[${status.index}]] -- [[${str}]]
+    </li>
+</ul>
+<!--if/unless 문-->
+<ul>
+    <li th:each="str, status: ${#list}">
+        <span th:if="${status.odd}">ODD -- [[${str}]]</span>
+        <span th:unless="${status.odd}">EVEN -- [[${str}]]</span>
+    </li>
+</ul>
+<!--이항 연산자-->
+<ul>
+    <li th:each="str,status:${list}">
+        <span th:text="${status.odd}?'ODD ---' + ${str}"></span>
+    </li>
+</ul>
+<!--삼항 연산자-->
+<ul>
+    <li th:each="str,status: ${list}">
+        <span th:text="${status.odd} ? 'ODD ---' + ${str} : 'EVEN ---' +${str}"></span>
+    </li>
+</ul>
+<!--switch / case 문-->
+<ul>
+    <li th:each="str,status: ${list}">
+        <th:block th:switch="${status.index % 3}">
+            <span th:case="0">0</span>
+            <span th:case="1">1</span>
+            <span th:case="2">2</span>
+        </th:block>
+    </li>
+</ul>
+```
