@@ -98,4 +98,9 @@ dependencies {
         </th:block>
     </li>
 </ul>
+<!--링크 처리들-->
+<a th:href="@{/hello}">Go to /hello</a>
+<a th:href="@{/hello(name='AAA', age=16)}">Go to /hello</a>
+<a th:href="@{/hello(name='한글처리', age=16)}">Go to /hello</a>
+<a th:href="@{/hello(types=${{'AAA','BB','CC'})}">Go to /hello</a>
 ```

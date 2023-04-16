@@ -52,5 +52,9 @@
         </th:block>
     </li>
 </ul>
+  <a th:href="@{/hello}">Go to /hello</a>
+  <a th:href="@{/hello(name='AAA', age=16)}">Go to /hello</a>
+  <a th:href="@{/hello(name='한글처리', age=16)}">Go to /hello</a>
+  <a th:href="@{/hello(types=${ {'AA','BB','CC'} }, age=16)}">Go to /hello</a>
 </body>
 </html>
