@@ -27,6 +27,12 @@ spring.jpa.show-sql=true
 ```
 2. build.gradle 설정
 ```
+//Querdsl 설정
+buildscript {
+	ext {
+		queryDslVersion = "5.0.0"
+	}
+}
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
@@ -39,6 +45,22 @@ dependencies {
 	testCompileOnly 'org.projectlombok:lombok'
 	testAnnotationProcessor 'org.projectlombok:lombok'
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.1.0'
+	
+	//Querdsl 설정
+	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+	annotationProcessor(
+			"javax.persistence:javax.persistence-api",
+			"javax.annotation:javax.annotation-api",
+			"com.querydsl:querydsl-apt:${queryDslVersion}:jpa"
+	)
+}
+//Querdsl 설정
+sourceSets{
+	main {
+		java {
+			srcDirs = ["$projectDir/src/main/java", "$projectDir/build/generated"]
+		}
+	}
 }
 ```
 3. JSON 데이터 란?
@@ -105,3 +127,18 @@ dependencies {
 <a th:href="@{/hello(name='한글처리', age=16)}">Go to /hello</a>
 <a th:href="@{/hello(types=${{'AAA','BB','CC'})}">Go to /hello</a>
 ```
+5. JPA 란?
+    * 데이터에 해당하는 객체를 엔티티객체라는 것으로 다루고 JPA로 DB와 연동해서 관리
+    * 엔티티 객체 - PK(기본키)를 가지는 자바의 객체. @Id 를 이용해서 객체를 구분
+    * 엔티티 클래스는 반드시 @Entity 가 존재하고 엔티티 객체 구분을 위한 @Id가 필요
+    * @MappedSuperClass : 공통으로 사용되는 칼럼들 지정하고, 해당 클래스를 상속하여 사용
+    * AuditingEntityListener : 엔티티가 DB에 추가,변경시 자동으로 시간 값을 지정
+    * @EnableJpaAuditing : AuditingEntityListener 를 활성하기 위해선 지정
+    * JpaRepository<엔티티 타입, @Id 타입> : 인터페이스를 선언하는 것만으로 DB 관련 작업 처리 가능
+    * save() : insert/update 를 실행하는 기능 
+    * findById() : 조회 기능, 리턴 타입은 Optional<T>
+    * deleteById() : 삭제 기능
+    * Pageable, page<E> : 페이징 처리 
+    * @Query : SQL 과 유사하게 JPA에서 사용하는 쿼리 언어
+    * 원하는 속성만 추출해서 Object[] 로 처리 하거나 DTO로 처리하는 기능
+   
